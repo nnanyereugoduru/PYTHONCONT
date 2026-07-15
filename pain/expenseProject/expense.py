@@ -1,6 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import json
+import csv
 
 #General goal is to make an expense app that saves to a json and can pull out a chart with the categories and respective share of the total
 
@@ -39,6 +40,9 @@ def check_expenses(book):
             percent = j/total * 100
             percentage[i] = percent'''
         
+        if not book:
+            print("no expenses logged yet")
+            return
         plt.pie(book.values(), labels=book.keys(), autopct='%1.1f%%')
         plt.show()
         
@@ -46,6 +50,15 @@ def check_expenses(book):
     else:
         print()
         print('invalid')
+
+def save_to_csv(book):
+    csv_path = r'C:\Projects\FOLDER1\PY1\pain\expenseProject\expense.csv'
+    with open(csv_path, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Category', 'Amount'])  # header
+        for category, amount in book.items():
+            writer.writerow([category, amount])
+    print("saved to CSV")
 
 online = True
 count = 0
@@ -71,6 +84,7 @@ while online:
         print('1. input expenses')
         print('2. check expenses')
         print('3. quit')
+        print('4. save to csv')
         
         user_input = int(input('CHOOSE (the number) >> '))
 
@@ -83,6 +97,8 @@ while online:
         elif user_input == 3:
             print('goodbye')
             online = False
+        elif user_input == 4:
+            save_to_csv(expenses)
         else:
             print('invalid due to incorrect number')
             print()

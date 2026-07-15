@@ -4,7 +4,7 @@ import face_recognition
 import numpy as np
 from PIL import Image, ImageOps
 
-reference_path = r"C:\Projects\FOLDER1\PY1\me2.jpg"
+reference_path = r"C:\Projects\FOLDER1\PY1\pain\me2.jpg"
 
 # --- Load reference image with EXIF orientation fix ---
 pil_img = Image.open(reference_path)
