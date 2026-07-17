@@ -1,4 +1,4 @@
-coded in PYTHOM 311
+coded in PYTHON 311
 
 Created after switching my python model from 313 -> 311
 
