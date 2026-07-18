@@ -13,10 +13,13 @@ class RoomScheduler:
     def __init__(self):
         self.bookings = {}  # room -> list of booking dicts
 
-    def book(self, room, start, end, title, attendees=[]):
+    def book(self, room, start, end, title, attendees=None):
+        if attendees == None: #this creates a new list for every call of code.
+            attendees = []
         if room not in self.bookings:
             self.bookings[room] = []
-
+        #attendees.append("X") 
+        # had no Idea what was the problem consulted AI, used the above phrase to find out that attendees = [] creates a single shared list
         if self.is_available(room, start, end):
             self.bookings[room].append({
                 'start': start,
@@ -30,9 +33,9 @@ class RoomScheduler:
 
     def is_available(self, room, start, end):
         for b in self.bookings.get(room, []):
-            if start >= b['end'] or end <= b['start']:
-                return False
-        return True
+            if start < b['end'] and end > b['start'] : #found with the help of AI but understand it. first start < end (always) so if the new staet is less then the previous end and the new end is greater than the start it means that end < start would occur and that does not make sense. if it was end > b['start'] too it could lead to it checking up on an empty block of time 
+                return False 
+        return True 
 
     def cancel(self, room, start):
         if room in self.bookings:
@@ -44,13 +47,14 @@ class RoomScheduler:
         else:
             print('invalid')
 
-    def cancel_by_attendee(self, name):
+    def cancel_by_attendee(self, name): # issue only cancels 1 instead of all
         removed = 0
         for room, blist in self.bookings.items():
-            for b in blist:
+            for b in list(blist): # creates copy 
                 if name in b['attendees']:
                     blist.remove(b)
                     removed += 1
+        
         return removed
 
     def daily_schedule(self, room):
@@ -58,18 +62,20 @@ class RoomScheduler:
     
     # first thing I did so I can know the actually save 
     def printall(self):
-        for rooms in self.bookings.items():
-            print(rooms)
+        for rooms , bookings in self.bookings.items():
+            print(f'Room: {rooms}')
+            for b in bookings:
+                print(f"  {b['start']}-{b['end']}: {b['title']} ({b['attendees']})")
 
 def main():
     sched = RoomScheduler()
 
     sched.book("Falcon", 9, 10, "Standup")
-    sched.printall()
+    
     sched.book("Falcon", 10, 11, "Design Review")
-    sched.printall()
+    
     sched.book("Falcon", 13, 14, "1:1", attendees=["Sam"])
-    sched.printall()
+    
     sched.book("Falcon", 14, 15, "Retro", attendees=["Sam", "Jo"])
     sched.printall() #found the problem of the program not updating 
 
@@ -90,6 +96,19 @@ def main():
     print("Falcon schedule after:")
     for b in sched.daily_schedule("Falcon"):
         print(f"  {b['start']}-{b['end']}: {b['title']} ({b['attendees']})")
+    sched.printall()
+
+    print()
+    sched.book("Falcon", 13, 14, "1:1", attendees=["Sam"])
+    sched.printall()
+    sched.book("Falcon", 15, 16, "1:1")
+    sched.printall()
+    sched.book("Falcon", 16, 17, "Design Review")
+    sched.printall()
+
+    sched.book("Falcon", 20, 21, "BugDemo")
+    sched.book("Falcon", 21, 22, "BugDemo2")
+    sched.printall()
 
 
 if __name__ == "__main__":
