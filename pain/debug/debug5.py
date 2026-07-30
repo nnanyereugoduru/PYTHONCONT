@@ -29,6 +29,9 @@ class Bank:
         return account_id
 
     def deposit(self, account_id, amount):
+        if account_id not in self.accounts:
+            print(f"error: account {account_id} does not exist ")
+            return False
         account = self.accounts[account_id]
         account['balance'] += amount
         account['transactions'].append(('deposit', amount))
@@ -36,7 +39,7 @@ class Bank:
 
     def withdraw(self, account_id, amount):
         account = self.accounts[account_id]
-        if amount > account['balance']:
+        if amount <= account['balance']:
             account['balance'] -= amount
             account['transactions'].append(('withdraw', amount))
             return True
@@ -44,22 +47,27 @@ class Bank:
             return False
 
     def transfer(self, from_id, to_id, amount):
-        self.withdraw(from_id, amount)
-        self.deposit(to_id, amount)
-        return True
+        if self.withdraw(from_id, amount):
+            self.deposit(to_id, amount)
+            return True
+        return False
 
     def flag_pending(self, account_id, description):
         self.accounts[account_id]['pending'].append(description)
 
     def clear_pending(self, account_id, descriptions_to_clear):
         pending = self.accounts[account_id]['pending']
-        for desc in pending:
-            if desc in descriptions_to_clear:
-                pending.remove(desc)
+        for i in list(pending):
+            if i in descriptions_to_clear:
+                pending.remove(i)
 
     def balance(self, account_id):
         return self.accounts[account_id]['balance']
-
+    def test(self):
+        print("test")
+        #print(self.accounts)
+        for account_id, account in self.accounts.items():
+            print(f"Account {account_id}: Owner: {account['owner']}, Balance: {account['balance']}, Transactions: {account['transactions']}, Pending: {account['pending']}")
 
 def main():
     bank = Bank()
@@ -86,11 +94,17 @@ def main():
     bank.deposit(999, 50)
 
     print("\nFlagging and clearing pending transactions...")
+    print('------')
     bank.flag_pending(alice, "check #1")
+    bank.test()
     bank.flag_pending(alice, "check #2")
+    bank.test()
     bank.flag_pending(alice, "check #3")
+    bank.test()
+    print("test", bank.accounts[alice]['pending'])
     bank.clear_pending(alice, ["check #1", "check #2", "check #3"])
     print("Alice's pending after clearing:", bank.accounts[alice]['pending'])
+    bank.test()
 
 
 if __name__ == "__main__":

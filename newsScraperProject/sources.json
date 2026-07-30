@@ -1,0 +1,9 @@
+{
+  "_comment": "Add or override sources here. Entries here are merged with, and take priority over, the built-in defaults in bias_tracker.py.",
+  "source_bias": {
+    "example.com": "left"
+  },
+  "rss_feeds": [
+    "https://example.com/rss.xml"
+  ]
+}
