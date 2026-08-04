@@ -1,1 +1,72 @@
-{}
+{
+    "kanye": {
+        "graduation": 0,
+        "flashing lights": 0,
+        "stronger": 0,
+        "good life": 0,
+        "can't tell me nothing": 0
+    },
+    "drake": {
+        "marvin's room": 0,
+        "headlines": 0,
+        "take care": 0,
+        "god's plan": 0,
+        "nonstop": 0
+    },
+    "kendrick lamar": {
+        "humble": 0,
+        "dna": 0,
+        "alright": 0,
+        "swimming pools": 0,
+        "money trees": 0
+    },
+    "frank ocean": {
+        "pink + white": 0,
+        "nights": 0,
+        "ivy": 0,
+        "self control": 0,
+        "thinking bout you": 0
+    },
+    "beyonce": {
+        "halo": 0,
+        "formation": 0,
+        "crazy in love": 0,
+        "love on top": 0,
+        "drunk in love": 0
+    },
+    "the weeknd": {
+        "blinding lights": 0,
+        "starboy": 0,
+        "the hills": 0,
+        "save your tears": 0,
+        "can't feel my face": 0
+    },
+    "rihanna": {
+        "umbrella": 0,
+        "diamonds": 0,
+        "work": 0,
+        "needed me": 0,
+        "stay": 0
+    },
+    "j cole": {
+        "no role modelz": 0,
+        "wet dreamz": 0,
+        "power trip": 0,
+        "middle child": 0,
+        "love yourz": 0
+    },
+    "travis scott": {
+        "goosebumps": 0,
+        "sicko mode": 0,
+        "antidote": 0,
+        "highest in the room": 0,
+        "90210": 0
+    },
+    "childish gambino": {
+        "redbone": 0,
+        "3005": 0,
+        "this is america": 0,
+        "sober": 0,
+        "telegraph ave": 0
+    }
+}
