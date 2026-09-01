@@ -10,6 +10,10 @@ conn = sqlite3.connect(r'C:\Projects\FOLDER1\PY1\titanix.db')
 df['Sex'] = np.where(df['Sex'] == 'female', 1, 0)
 df2['Sex'] = np.where(df2['Sex'] == 'female', 1, 0)
 
+df['Embarked'] = df["Embarked"].map({"S":1, "Q": 2, "C": 3})
+df2['Embarked'] = df["Embarked"].map({"S":1, "Q": 2, "C": 3})
+
+
 
 df.to_sql('train', conn, if_exists='replace', index=False)
 df1.to_sql('genderS', conn, if_exists='replace', index=False)

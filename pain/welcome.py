@@ -2,12 +2,13 @@ import cv2
 import mediapipe as mp
 import face_recognition
 import numpy as np
+import time
 from PIL import Image, ImageOps
 
-reference_path = r"C:\Projects\FOLDER1\PY1\pain\me2.jpg"
+reference_path2 = r"C:\Projects\FOLDER1\PY1\pain\me2.jpg"
 
 # --- Load reference image with EXIF orientation fix ---
-pil_img = Image.open(reference_path)
+pil_img = Image.open(reference_path2)
 pil_img = ImageOps.exif_transpose(pil_img)  # fixes rotation based on EXIF tag
 pil_img = pil_img.convert("RGB")
 
@@ -20,7 +21,7 @@ print("shape:", img.shape, "dtype:", img.dtype)
 locs = face_recognition.face_locations(img, model="hog")
 
 if len(locs) == 0:
-    raise ValueError("No face detected in me2.jpg — use a clear, frontal photo.")
+    raise ValueError("No face detected in reference photo — use a clear, frontal photo.")
 
 # Encode the known face
 known_encoding = face_recognition.face_encodings(img, locs)[0]
@@ -31,6 +32,8 @@ mp_draw = mp.solutions.drawing_utils
 hand_detector = mp_hands.Hands(min_detection_confidence=0.7, max_num_hands=2)
 
 cap = cv2.VideoCapture(0)
+
+prev_time = time.time()
 
 while True:
     ret, frame = cap.read()
@@ -46,11 +49,11 @@ while True:
 
     for (top, right, bottom, left), encoding in zip(face_locations, face_encodings):
         match = face_recognition.compare_faces([known_encoding], encoding, tolerance=0.5)
-        label = "You" if match[0] else "Unknown"
-        color = (0, 255, 0) if match[0] else (0, 0, 255)
+        label = "Patrick" if match[0] else "Unknown"
+        color = (0, 200, 0) if match[0] else (0, 0, 0)
 
-        cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
-        cv2.putText(frame, label, (left, top - 10),
+        cv2.rectangle(frame, (left, top), (right, bottom), color, 1)
+        cv2.putText(frame, label, (left, top - 8),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
 
     # Hand tracking
@@ -58,6 +61,13 @@ while True:
     if hand_results.multi_hand_landmarks:
         for hand_landmarks in hand_results.multi_hand_landmarks:
             mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
+    # --- FPS counter ---
+    curr_time = time.time()
+    fps = 1 / (curr_time - prev_time) if curr_time != prev_time else 0
+    prev_time = curr_time
+    cv2.putText(frame, f"FPS: {int(fps)}", (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
     cv2.imshow("Face + Hand Recognition", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
