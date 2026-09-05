@@ -12,7 +12,7 @@ losses = []
 iterations = []
 
 for j in range(60000):
-    l1 = 1/(1+np.exp(-(np.dot(X,syn0))))
+    l1 = 1/(1+np.exp(-np.dot(X,syn0)))
     l2 = 1/(1+np.exp(-(np.dot(l1,syn1))))
     l2_delta = (y - l2)*(l2*(1-l2))
     l1_delta = l2_delta.dot(syn1.T) * (l1 * (1-l1))
