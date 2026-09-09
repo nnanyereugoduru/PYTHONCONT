@@ -105,12 +105,3 @@ while online:
             input("press enter to continue")
         else:
             print("Invalid operation. Please enter '+' or '-'.")
-         
-       
-
-        
-
-
-
-
-    

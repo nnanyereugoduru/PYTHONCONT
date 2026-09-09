@@ -1,12 +1,14 @@
+import pyautogui
+import time
+
+print("Starting in:")
+for i in range(5, 0, -1):
+    print(i)
+    time.sleep(1)
+
 screen_width, screen_height = pyautogui.size()
+y = screen_height // 2
 
-y = screen_height // 2  # keep it vertically centered
-
-# Move to the left edge first
-pyautogui.moveTo(0, y, duration=0.5)
-time.sleep(0.5)
-
-# Move across to the right edge
 active = True
 while active:
     try:
